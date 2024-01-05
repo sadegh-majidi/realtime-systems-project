@@ -8,8 +8,5 @@ class Task:
         self.execution_time = None
         self.execution_profiles = {}
 
-    def __lt__(self, other):
-        return self.arrival < other.arrival
-
     def add_execution_profile(self, sm_count: int, execution_profile: ExecutionProfile) -> None:
         self.execution_profiles[sm_count] = execution_profile
