@@ -1,4 +1,4 @@
-from task_gen import AvgExecTaskGenerator
+from task_gen import TaskGenerator
 
 if __name__ == '__main__':
-    task = AvgExecTaskGenerator.generate_tasks()
+    tasks = TaskGenerator(gen_type=TaskGenerator.MAX).generate_tasks()
