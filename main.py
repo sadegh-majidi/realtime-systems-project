@@ -9,7 +9,29 @@ import matplotlib.patches as patches
 
 
 def create_plot_for_FCFS_tasks(tasks):
-    pass
+    for task in tasks:
+        values = tasks[task]
+
+        fig, ax = plt.subplots()
+        y_value = 0.5
+        # x_ticks = [segment[0] for segment in executed_slots]
+        for segment in values:
+            width = segment[1] - segment[0]
+            rect = patches.Rectangle((segment[0], y_value - 0.5), width, 1, linewidth=0, edgecolor='lightblue',
+                                     facecolor='lightblue')
+            ax.add_patch(rect)
+
+        ax.spines['top'].set_visible(False)
+        ax.spines['bottom'].set_visible(False)
+        # ax.set_xticks(x_ticks)
+        plt.xlim(0, 10000)
+        plt.ylim(0, 2)
+
+        plt.xlabel('time')
+        plt.ylabel('y')
+        plt.title(f'{task}')
+
+        plt.show()
 
 
 def create_plot_for_sBEET_tasks(tasks):
@@ -21,16 +43,16 @@ def create_plot_for_sBEET_tasks(tasks):
         fig, ax = plt.subplots()
 
         y_value = 0.5
-
+        # x_ticks = [segment[0] for segment in executed_slots]
         for segment in executed_slots:
             width = segment[1] - segment[0]
             rect = patches.Rectangle((segment[0], y_value - 0.5), width, 1, linewidth=0, edgecolor='lightblue',
                                      facecolor='lightblue')
             ax.add_patch(rect)
-            ax.text(segment[0], y_value + 0.6, f"x={segment[0]}", ha='center')
 
         ax.spines['top'].set_visible(False)
         ax.spines['bottom'].set_visible(False)
+        # ax.set_xticks(x_ticks)
         plt.xlim(0, 10000)
         plt.ylim(0, 2)
 
@@ -70,11 +92,12 @@ if __name__ == '__main__':
     sbeet_tasks = wrap_tasks_for_sBEET_schedule(tasks)
 
     hyper_period = calculate_hyper_period(fcfs_tasks)
-    # fsfc_controller = FSFCController(fcfs_tasks).init_task_queue()
-    # scheduler = Scheduler(hyper_period=hyper_period, controller=fsfc_controller)
-    # scheduler.run_FCFS_schedule()
+    fsfc_controller = FSFCController(fcfs_tasks).init_task_queue()
+    scheduler = Scheduler(hyper_period=10000, controller=fsfc_controller)
+    scheduled_tasks = scheduler.run_FCFS_schedule()
+    create_plot_for_FCFS_tasks(scheduled_tasks)
 
-    sbeet_controller = sBEETController(sbeet_tasks).init_task_queue()
-    scheduler = Scheduler(hyper_period=10000, controller=sbeet_controller)
-    scheduled_tasks = scheduler.run_sBEET_schedule()
-    create_plot_for_sBEET_tasks(scheduled_tasks)
+    # sbeet_controller = sBEETController(sbeet_tasks).init_task_queue()
+    # scheduler = Scheduler(hyper_period=10000, controller=sbeet_controller)
+    # scheduled_tasks = scheduler.run_sBEET_schedule()
+    # create_plot_for_sBEET_tasks(scheduled_tasks)

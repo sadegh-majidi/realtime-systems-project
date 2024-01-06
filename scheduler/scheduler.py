@@ -9,14 +9,26 @@ class Scheduler:
 
     def run_FCFS_schedule(self):
         current_time = 0
-
+        scheduled_logs = {}
+        for task in self.controller.tasks:
+            scheduled_logs[task.name] = []
         while current_time <= self.hyper_period:
             active_task = self.controller.get_task_to_execute()
+            if current_time < active_task.arrival:
+                current_time = active_task.arrival
+
             print(f"Executing task #{active_task.name}")
+            scheduled_logs[active_task.name].append((current_time, current_time + active_task.execution_time))
             current_time += active_task.execution_time
-            print(f"Task #{active_task.name} executed")
+
+            if active_task.arrival + active_task.period < current_time:
+                print(f"Task #{active_task.name} missed its deadline!!!!!")
+            else:
+                print(f"Task #{active_task.name} executed")
+
             active_task.task.arrival += active_task.period
             self.controller.add_task_to_queue(active_task)
+        return scheduled_logs
 
     def run_sBEET_schedule(self):
         current_time = 0
@@ -28,7 +40,7 @@ class Scheduler:
         while current_time < self.hyper_period:
             first_task, second_task = self.controller.get_task_to_execute(remaining_cores)
             if current_time < first_task.arrival and current_time < second_task.arrival:
-                current_time += min(first_task.arrival, second_task.arrival)
+                current_time = min(first_task.arrival, second_task.arrival)
 
             if not first_task.executed:
                 if first_task.arrival <= current_time:
