@@ -21,7 +21,7 @@ class Scheduler:
     def run_sBEET_schedule(self):
         current_time = 0
         remaining_cores = 6
-        while current_time <= self.hyper_period:
+        while current_time < self.hyper_period:
             first_task, second_task = self.controller.get_task_to_execute(remaining_cores)
             remaining_cores = 6
             remaining_cores -= first_task.cores + second_task.cores
