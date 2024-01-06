@@ -61,11 +61,15 @@ class sBEETController:
     #     self.get_best_route_to_execute(i, total_exec_time, total_power)
 
     def get_task_to_execute(self, remaining_cores):
+        if remaining_cores == 0:
+            first_task = heapq.heappop(self.tasks_queue)
+            second_task = heapq.heappop(self.tasks_queue)
+            return first_task, second_task
         if remaining_cores != 6:
             first_task = heapq.heappop(self.tasks_queue)
             second_task = heapq.heappop(self.tasks_queue)
-            second_task.cores = 6 - remaining_cores
-            second_task.execution_time = second_task.execution_profiles[6 - remaining_cores].exec_time
+            second_task.cores = remaining_cores
+            second_task.execution_time = second_task.execution_profiles[remaining_cores].exec_time
             return first_task, second_task
         else:
             first_task = heapq.heappop(self.tasks_queue)

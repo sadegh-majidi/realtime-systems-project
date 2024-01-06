@@ -10,6 +10,7 @@ class Task:
         self.util = None
         self.index = None
         self.cores = None
+        self.executed = False
         self.execution_profiles = {}
 
     def add_execution_profile(self, sm_count: int, execution_profile: ExecutionProfile) -> None:
