@@ -7,9 +7,6 @@ class Scheduler:
         self.hyper_period = hyper_period
         self.controller = controller
 
-    def setup_controller(self):
-        self.controller.init_task_queue()
-
     def run_FCFS_schedule(self):
         current_time = 0
 
@@ -26,7 +23,7 @@ class Scheduler:
         remaining_cores = 6
         while current_time <= self.hyper_period:
             first_task, second_task = self.controller.get_task_to_execute(remaining_cores)
-
+            remaining_cores = 6
             remaining_cores -= first_task.cores + second_task.cores
 
             print(f"Executing task #{first_task.name} on #{first_task.cores} cores")
@@ -41,14 +38,14 @@ class Scheduler:
             if first_task.execution_time == 0:
                 print(f"Task #{first_task.name} executed")
                 remaining_cores += first_task.cores
-                first_task.arrival_time += first_task.period
+                first_task.arrival += first_task.period
                 first_task.cores = None
                 first_task.execution_time = None
 
             if second_task.execution_time == 0:
                 print(f"Task #{second_task.name} executed")
                 remaining_cores += second_task.cores
-                second_task.arrival_time += second_task.period
+                second_task.arrival += second_task.period
                 second_task.cores = None
                 second_task.execution_time = None
 
