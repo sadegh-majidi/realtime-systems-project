@@ -4,6 +4,41 @@ from scheduler.wrapped_classes import FCFSTaskWrapper, sBEETTaskWrapper
 from scheduler.scheduler import Scheduler
 from scheduler.FCFS_controller import FSFCController
 from scheduler.sBEET_controller import sBEETController
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
+
+
+def create_plot_for_FCFS_tasks(tasks):
+    pass
+
+
+def create_plot_for_sBEET_tasks(tasks):
+    for task in tasks:
+        values = tasks[task]
+        executed_slots = []
+        for i in range(0, len(values) - 1, 2):
+            executed_slots.append((values[i], values[i + 1]))
+        fig, ax = plt.subplots()
+
+        y_value = 0.5
+
+        for segment in executed_slots:
+            width = segment[1] - segment[0]
+            rect = patches.Rectangle((segment[0], y_value - 0.5), width, 1, linewidth=0, edgecolor='lightblue',
+                                     facecolor='lightblue')
+            ax.add_patch(rect)
+            ax.text(segment[0], y_value + 0.6, f"x={segment[0]}", ha='center')
+
+        ax.spines['top'].set_visible(False)
+        ax.spines['bottom'].set_visible(False)
+        plt.xlim(0, 10000)
+        plt.ylim(0, 2)
+
+        plt.xlabel('time')
+        plt.ylabel('y')
+        plt.title(f'{task}')
+
+        plt.show()
 
 
 def wrap_tasks(schedule_wrapper, tasks):
@@ -40,5 +75,6 @@ if __name__ == '__main__':
     # scheduler.run_FCFS_schedule()
 
     sbeet_controller = sBEETController(sbeet_tasks).init_task_queue()
-    scheduler = Scheduler(hyper_period=hyper_period, controller=sbeet_controller)
-    scheduler.run_sBEET_schedule()
+    scheduler = Scheduler(hyper_period=10000, controller=sbeet_controller)
+    scheduled_tasks = scheduler.run_sBEET_schedule()
+    create_plot_for_sBEET_tasks(scheduled_tasks)
