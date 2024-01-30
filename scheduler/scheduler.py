@@ -10,15 +10,21 @@ class Scheduler:
     def run_FCFS_schedule(self):
         current_time = 0
         scheduled_logs = {}
+        power_logs = []
         for task in self.controller.tasks:
             scheduled_logs[task.name] = []
+
         while current_time <= self.hyper_period:
             active_task = self.controller.get_task_to_execute()
             if current_time < active_task.arrival:
                 current_time = active_task.arrival
 
             print(f"Executing task #{active_task.name}")
+
             scheduled_logs[active_task.name].append((current_time, current_time + active_task.execution_time))
+            power_logs.append(
+                (current_time, current_time + active_task.execution_time, active_task.name,
+                 active_task.execution_profiles[6].power))
             current_time += active_task.execution_time
 
             if active_task.arrival + active_task.period < current_time:
@@ -28,7 +34,7 @@ class Scheduler:
 
             active_task.task.arrival += active_task.period
             self.controller.add_task_to_queue(active_task)
-        return scheduled_logs
+        return scheduled_logs, power_logs
 
     def run_sBEET_schedule(self):
         current_time = 0
