@@ -78,7 +78,7 @@ class TaskGenerator:
             self.add_profiles_to_task(task)
             for profile in task.execution_profiles.values():
                 profile.exec_time = profile.max
-            task.execution_time = task.execution_profiles[1].exec_time
+            task.execution_time = task.execution_profiles[6].exec_time
             task.util = utilization
             task.period = task.execution_time / utilization
             all_tasks.append(task)
