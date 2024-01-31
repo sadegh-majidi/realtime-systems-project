@@ -80,7 +80,7 @@ class TaskGenerator:
                 profile.exec_time = profile.max
             task.execution_time = task.execution_profiles[6].exec_time
             task.util = utilization
-            task.period = task.execution_time / utilization
+            task.period = task.execution_profiles[1].exec_time / utilization
             all_tasks.append(task)
 
         random.shuffle(all_tasks)
