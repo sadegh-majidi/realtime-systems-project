@@ -94,9 +94,10 @@ if __name__ == '__main__':
     hyper_period = calculate_hyper_period(fcfs_tasks)
     fsfc_controller = FSFCController(fcfs_tasks).init_task_queue()
     scheduler = Scheduler(hyper_period=10000, controller=fsfc_controller)
-    scheduled_logs, power_logs = scheduler.run_FCFS_schedule()
+    scheduled_logs, power_logs, deadline_miss_rate_logs = scheduler.run_FCFS_schedule()
     # create_plot_for_FCFS_tasks(scheduled_logs)
-    print(power_logs)
+    # print(power_logs)
+    print(deadline_miss_rate_logs)
 
     # sbeet_controller = sBEETController(sbeet_tasks).init_task_queue()
     # scheduler = Scheduler(hyper_period=10000, controller=sbeet_controller)

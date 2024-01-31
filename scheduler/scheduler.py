@@ -11,8 +11,10 @@ class Scheduler:
         current_time = 0
         scheduled_logs = {}
         power_logs = []
+        deadline_miss_rate_logs = {}
         for task in self.controller.tasks:
             scheduled_logs[task.name] = []
+            deadline_miss_rate_logs[task.name] = {"utilization": task.util, "deadline_miss_rate": 0}
 
         while current_time <= self.hyper_period:
             active_task = self.controller.get_task_to_execute()
@@ -29,12 +31,13 @@ class Scheduler:
 
             if active_task.arrival + active_task.period < current_time:
                 print(f"Task #{active_task.name} missed its deadline!!!!!")
+                deadline_miss_rate_logs[active_task.name]["deadline_miss_rate"] += 1
             else:
                 print(f"Task #{active_task.name} executed")
 
             active_task.task.arrival += active_task.period
             self.controller.add_task_to_queue(active_task)
-        return scheduled_logs, power_logs
+        return scheduled_logs, power_logs, deadline_miss_rate_logs
 
     def run_sBEET_schedule(self):
         current_time = 0
