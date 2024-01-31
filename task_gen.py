@@ -83,7 +83,10 @@ class TaskGenerator:
             task.period = task.execution_profiles[1].exec_time / utilization
             all_tasks.append(task)
 
-        random.shuffle(all_tasks)
+        # random.shuffle(all_tasks)
+        # for i in range(len(task_utils)):
+        #     all_tasks[i].index = i
+        all_tasks = sorted(all_tasks, key=lambda t: t.period)
         for i in range(len(task_utils)):
             all_tasks[i].index = i
 
